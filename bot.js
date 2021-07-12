@@ -6,15 +6,15 @@ easyvk({
   reauth: true,
   v: "5.103" 
 }).then(async vk => {
-  let connection = await vk.bots.longpoll.connect();
-  connection.on("message_new", async msg => {
+  let connection = await vk.bots.longpoll.connect(); // connecting to longpoll api
+  connection.on("message_new", async msg => { 
     if (
       msg.message &&
       msg.message.action &&
-      msg.message.action.type === "chat_invite_user" &&
-      msg.message.action.member_id === -vk.session.group_id
+      msg.message.action.type === "chat_invite_user" && // starting to spam when invited to chat
+      msg.message.action.member_id === -vk.session.group_id // checking if the group is not who sended message
     ) {
-      function makeid(length) {
+      function makeid(length) { // generating spam text
         var result = [];
         var characters =
           'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}:;"|?><!@#$%^&*(_+)"}{}';
@@ -26,9 +26,8 @@ easyvk({
         }
         return result.join("");
       }
-      console.log(makeid(5));
 
-      async function sendHelloMessage(peerId) {
+      async function sendHelloMessage(peerId) { // function to send message (sorry)
         return vk.call("messages.send", {
           peer_id: peerId,
           random_id: easyvk.randomId(),
@@ -37,7 +36,7 @@ easyvk({
       }
       setInterval(() => {
         sendHelloMessage(msg.message.peer_id);
-      }, 5 * 100);
+      }, 5 * 100); // SORRY
     }
   });
 });
