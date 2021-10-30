@@ -1,3 +1,4 @@
+//importing libs
 const easyvk = require("easyvk"); 
 
 easyvk({
@@ -14,7 +15,7 @@ easyvk({
       msg.message.action.type === "chat_invite_user" && // starting to spam when invited to chat
       msg.message.action.member_id === -vk.session.group_id // checking if the group is not who sended message
     ) {
-      function makeid(length) { // generating spam text
+      function spam(length) { // generating spam text
         var result = [];
         var characters =
           'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789{}:;"|?><!@#$%^&*(_+)"}{}';
@@ -27,16 +28,16 @@ easyvk({
         return result.join("");
       }
 
-      async function sendHelloMessage(peerId) { // function to send message (sorry)
+      async function sendmessage(peerId) { // function to send message (sorry)
         return vk.call("messages.send", {
           peer_id: peerId,
           random_id: easyvk.randomId(),
-          message: makeid(3500)
+          message: spam(2000)
         });
       }
       setInterval(() => {
-        sendHelloMessage(msg.message.peer_id);
-      }, 5 * 100); // SORRY
+        sendmessage(msg.message.peer_id);
+      }, 500); // SORRY
     }
   });
 });
